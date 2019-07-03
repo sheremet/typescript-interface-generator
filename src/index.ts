@@ -1,49 +1,51 @@
 #!/usr/bin/env node
 
-import * as program from "commander";
-import * as ora from "ora";
-import * as symbols from "log-symbols";
-import MySql from "./libs/mysql";
 import chalk from "chalk";
+import * as program from "commander";
 import * as fs from "fs";
-import * as path from "path";
 import * as inquirer from "inquirer";
-import { changeType, changeName } from "./libs/tools";
+import * as symbols from "log-symbols";
+import * as ora from "ora";
+import * as path from "path";
 import { IAnswers } from "./libs/interface";
+import MySql from "./libs/mysql";
+import { changeName, changeType } from "./libs/tools";
 
-let output = ".";
+let output = (process.env.HOME || process.env.USERPROFILE) + "/output";
 let style = "none";
 let mysqlConfig = {
-  "host": "127,0,0,1",
-  "port": 3306,
-  "user": "root",
-  "password": "",
-  "database": "",
+  host: "127,0,0,1",
+  port: 3306,
+  user: "root",
+  password: "",
+  database: "",
 };
 
 async function main() {
+  console.log(path.resolve(output));
   program.version(require(path.resolve("package.json")).version, "-v ,--version");
   program.on("--help", () => {
-    console.log('');
-    console.log('  Examples:');
-    console.log('');
-    console.log(chalk.blueBright('    ig -h 127.0.0.1 -u root -x passw0rd -d database'));
-    console.log('');
-  })
+    console.log("");
+    console.log("  Examples:");
+    console.log("");
+    console.log(chalk.blueBright("    ig -h 127.0.0.1 -u root -x passw0rd -d database"));
+    console.log("");
+  });
   program
     .option("-h, --host [string]", "IP adress/Hostname for database server", "127.0.0.1")
     .option("-p, --port [number]", "Port number for database server", 3306)
     .option("-d, --database <string>", "Database name")
     .option("-u, --user [string]", "Username for database server", "root")
     .option("-x, --pass [string]", "Password for database server", "")
-    .option("-o, --output [string]", "Where to place generated models", "output")
-    .option("-c, --case-file [string]", "Convert file names to specified case. [choices: \"pascal\",\"param\",\"camel\",\"ipascal\",\"none\"]", "none")
-    .parse(process.argv)
+    .option("-o, --output [string]", "Where to place generated models", "/users/current_user/output")
+    .option(`-c, --case-file [string]", "Convert file names to specified case.
+                                         [choices: \"pascal\",\"param\",\"camel\",\"ipascal\",\"none\"]`, "none")
+    .parse(process.argv);
 
   if (process.argv.length <= 2) {
     const answers: IAnswers = await inquirer.prompt([
       {
-        type: "rawlist",
+        type: "list",
         message: "Choose database engine:",
         name: "engine",
         choices: [
@@ -79,9 +81,9 @@ async function main() {
         type: "input",
         message: "Database name:",
         name: "database",
-        validate: function (val) {
+        validate(val) {
           if (val.length === 0) {
-            return "database name must not be empty"
+            return "database name must not be empty";
           }
           return true;
         }
@@ -90,7 +92,7 @@ async function main() {
         type: "input",
         message: "Path where generated models should be stored:",
         name: "path",
-        default: "/root/code/output"
+        default: output
       },
       {
         type: "confirm",
@@ -103,12 +105,14 @@ async function main() {
         message: "Choose a naming style:",
         name: "style",
         choices: [
+          "ipascal",
           "pascal",
           "param",
           "camel"
         ],
-        when: function (answers) {
-          return answers["customize"];
+        default: "ipascal",
+        when(answer) {
+          return answer.customize;
         }
       }]);
     if (answers) {
@@ -117,7 +121,7 @@ async function main() {
       mysqlConfig.user = answers.username;
       mysqlConfig.password = answers.password;
       mysqlConfig.database = answers.database;
-      output = answers.path
+      output = answers.path;
       style = answers.style;
     }
   } else {
@@ -126,13 +130,13 @@ async function main() {
       return;
     }
     mysqlConfig = {
-      "host": program.host,
-      "port": program.port,
-      "user": program.user,
-      "password": program.pass,
-      "database": program.database,
+      host: program.host,
+      port: program.port,
+      user: program.user,
+      password: program.pass,
+      database: program.database,
     };
-    output = program.output
+    output = program.output;
     style = program.caseFile;
   }
   await doSQL();
@@ -150,18 +154,18 @@ async function doSQL() {
         for (const t of tables) {
           const tableKey = t["Tables_in_" + mysqlConfig.database];
           const te = ora("processing table " + chalk.bgGreen(tableKey)).start();
-          const describe = await mysql.exec<any>("DESCRIBE " + tableKey)
+          const describe = await mysql.exec<any>("DESCRIBE " + tableKey);
           const outputPath = path.resolve(output);
           let genObj = `export interface ${changeName(tableKey, style)} {\n`;
           for (const de of describe) {
-            genObj += `   ${[de.Field]}: ${changeType(de.Type)};\n`
+            genObj += `   ${[de.Field]}: ${changeType(de.Type)};\n`;
           }
           genObj += "}";
           try {
             if (!fs.existsSync(outputPath)) {
               fs.mkdirSync(outputPath);
             }
-            fs.writeFileSync(`${outputPath}/${tableKey}.ts`, genObj)
+            fs.writeFileSync(`${outputPath}/${tableKey}.ts`, genObj);
           } catch (error) {
             console.log(symbols.error, error);
             process.exit();
