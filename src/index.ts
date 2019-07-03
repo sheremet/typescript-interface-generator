@@ -7,6 +7,7 @@ import * as inquirer from "inquirer";
 import * as symbols from "log-symbols";
 import * as ora from "ora";
 import * as path from "path";
+import { version } from "../package.json";
 import { IAnswers } from "./libs/interface";
 import MySql from "./libs/mysql";
 import { changeName, changeType } from "./libs/tools";
@@ -22,8 +23,7 @@ let mysqlConfig = {
 };
 
 async function main() {
-  console.log(path.resolve(output));
-  program.version(require(path.resolve("package.json")).version, "-v ,--version");
+  program.version(version, "-v ,--version");
   program.on("--help", () => {
     console.log("");
     console.log("  Examples:");

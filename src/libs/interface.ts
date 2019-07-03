@@ -1,13 +1,13 @@
 
 export interface IAnswers {
-  engine: string,
-  host: string,
-  port: number,
-  username: string,
-  password: string,
-  database: string,
-  path: string,
-  customize: boolean,
+  engine: string;
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  database: string;
+  path: string;
+  customize: boolean;
   style: string;
 }
 

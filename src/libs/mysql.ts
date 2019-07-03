@@ -1,14 +1,12 @@
 import * as mysql from "mysql";
 import { IConfig } from "./interface";
-import ora = require("ora");
-import { resolve } from "path";
 
 class MySql {
   private pool: mysql.Pool;
   private config: IConfig;
 
   constructor(config: IConfig) {
-    this.config = config
+    this.config = config;
     this.init();
   }
   init() {
@@ -17,14 +15,16 @@ class MySql {
     });
   }
   async getConn(): Promise<boolean> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
-      this.pool.getConnection((err, conn) => {
-        if (err) reject(false)
+      this.pool.getConnection((err) => {
+        if (err) { reject(false); }
         resolve(true);
-      })
-    })
+      });
+    });
   }
   async exec<T>(sql: string, params?: object): Promise<T> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.pool.getConnection((err, conn) => {
         if (err || !conn) {

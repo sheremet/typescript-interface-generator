@@ -1,2 +1,2 @@
-# typescript-interface-generator
+# table2interface
 Generate the interface of the database table

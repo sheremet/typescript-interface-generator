@@ -1,13 +1,14 @@
 {
-  "name": "typescript-database-interface",
-  "version": "1.0.4",
+  "name": "datatable-to-interface",
+  "version": "1.0.0",
   "description": "Generate the interface of the database tables for typescript projects",
   "main": "index.js",
   "bin": {
-    "ig": "./index.js"
+    "ig": "./src/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --config jestconfig.json",
+    "build": "tsc"
   },
   "private": false,
   "author": "abing",
@@ -35,6 +36,10 @@
   },
   "devDependencies": {
     "@types/inquirer": "^6.0.3",
-    "@types/mysql": "^2.15.6"
+    "@types/jest": "^24.0.15",
+    "@types/mysql": "^2.15.6",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.2"
   }
 }
