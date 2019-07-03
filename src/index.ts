@@ -38,8 +38,8 @@ async function main() {
     .option("-u, --user [string]", "Username for database server", "root")
     .option("-x, --pass [string]", "Password for database server", "")
     .option("-o, --output [string]", "Where to place generated models", "/users/current_user/output")
-    .option(`-c, --case-file [string]", "Convert file names to specified case.
-                                         [choices: \"pascal\",\"param\",\"camel\",\"ipascal\",\"none\"]`, "none")
+    .option("-c, --case-file [string]", `Convert file names to specified case.
+                                         [choices: "ipascal", "pascal","param","camel","none"]`, "none")
     .parse(process.argv);
 
   if (process.argv.length <= 2) {
