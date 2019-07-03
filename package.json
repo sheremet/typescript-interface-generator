@@ -1,10 +1,10 @@
 {
-  "name": "typescript-interface-generator",
-  "version": "1.0.0",
-  "description": "Generate the interface of the database table",
+  "name": "typescript-database-interface",
+  "version": "1.0.1",
+  "description": "Generate the interface of the database tables for typescript projects",
   "main": "index.js",
   "bin": {
-    "ig": "./index.js"
+    "ig": "./dist/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

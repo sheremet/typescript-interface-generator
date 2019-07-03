@@ -22,7 +22,7 @@ let mysqlConfig = {
 };
 
 async function main() {
-  program.version(require("../package.json").version, "-v ,--version");
+  program.version(require(path.resolve("package.json")).version, "-v ,--version");
   program.on("--help", () => {
     console.log('');
     console.log('  Examples:');
