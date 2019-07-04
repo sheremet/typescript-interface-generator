@@ -1,14 +1,16 @@
-import * as _ from "lodash";
 import * as changeCase from "change-case";
+import * as _ from "lodash";
+import { IDescribe } from "./interface";
 
 const toNums = ["float", "double", "decimal"];
 const toString = ["text", "date", "datetime", "timestamp", "json"];
-export const changeType = (type: string) => {
-  const lower_type = type.toLowerCase();
-  if (lower_type.includes("int") || toNums.includes(type)) {
+
+export function changeType(type: string) {
+  const lowerType = type.toLowerCase();
+  if (lowerType.includes("int") || toNums.includes(type)) {
     return "number";
   }
-  if (lower_type.includes("char") || toString.includes(type)) {
+  if (lowerType.includes("char") || toString.includes(type)) {
     return "string";
   }
   return type.toString();
@@ -22,4 +24,8 @@ export function changeName(name: string, style: string) {
     case "ipascal": return "I" + changeCase.pascal(name)
   }
   return name;
+}
+
+export function optionalParam(describe: IDescribe) {
+  return describe.Extra === "auto_increment" || describe.Null === "YES" ? "?" : "";
 }

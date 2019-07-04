@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import chalk from "chalk";
+import { exec } from "child_process";
 import * as program from "commander";
 import * as fs from "fs";
 import * as inquirer from "inquirer";
@@ -11,8 +12,13 @@ import * as path from "path";
 import { version } from "../package.json";
 import { IAnswers } from "./libs/interface";
 import MySql from "./libs/mysql";
-import { changeName, changeType } from "./libs/tools";
-let output = (process.env.HOME || process.env.USERPROFILE) + type() === "Windows_NT" ? "\\" : "/" + "output";
+import { changeName, changeType, optionalParam } from "./libs/tools";
+let output = (process.env.HOME || process.env.USERPROFILE);
+if (type() === "Windows_NT") {
+  output += "\\output";
+} else {
+  output += "/output";
+}
 let style = "none";
 let mysqlConfig = {
   host: "127,0,0,1",
@@ -21,7 +27,7 @@ let mysqlConfig = {
   password: "",
   database: "",
 };
-
+let openFolder = false;
 async function main() {
   program.version(version, "-v ,--version");
   program.on("--help", () => {
@@ -40,20 +46,21 @@ async function main() {
     .option("-o, --output [string]", "Where to place generated models", output)
     .option("-c, --case-file [string]", `Convert file names to specified case.
                                          [choices: "ipascal", "pascal","param","camel","none"]`, "none")
+    .option("-O, --open", "Whether to open the target path", false)
     .parse(process.argv);
 
   if (process.argv.length <= 2) {
     const answers: IAnswers = await inquirer.prompt([
-      {
-        type: "list",
-        message: "Choose database engine:",
-        name: "engine",
-        choices: [
-          "mysql",
-          "mssql",
-          "sqllite"
-        ]
-      },
+      // {
+      //   type: "list",
+      //   message: "Choose database engine:",
+      //   name: "engine",
+      //   choices: [
+      //     "mysql",
+      //     "mssql",
+      //     "sqllite"
+      //   ]
+      // },
       {
         type: "input",
         message: "Database adress:",
@@ -114,6 +121,12 @@ async function main() {
         when(answer) {
           return answer.customize;
         }
+      },
+      {
+        type: "confirm",
+        message: "Open the file directory?",
+        name: "open",
+        default: false
       }]);
     if (answers) {
       mysqlConfig.host = answers.host;
@@ -123,6 +136,7 @@ async function main() {
       mysqlConfig.database = answers.database;
       output = answers.path;
       style = answers.style;
+      openFolder = answers.open;
     }
   } else {
     if (program.database === undefined) {
@@ -138,6 +152,7 @@ async function main() {
     };
     output = program.output;
     style = program.caseFile;
+    openFolder = program.open;
   }
   await doSQL();
   process.exit();
@@ -158,7 +173,7 @@ async function doSQL() {
           const outputPath = path.resolve(output);
           let genObj = `export interface ${changeName(tableKey, style)} {\n`;
           for (const de of describe) {
-            genObj += `   ${[de.Field]}: ${changeType(de.Type)};\n`;
+            genObj += `   ${[de.Field]}${optionalParam(de)}: ${changeType(de.Type)};\n`;
           }
           genObj += "}";
           try {
@@ -172,6 +187,15 @@ async function doSQL() {
           }
           te.succeed("table " + chalk.bgBlue(tableKey) + " has been processed").stop();
         }
+        if (openFolder) {
+          if (type() === "Windows_NT") {
+            exec(`explorer.exe ${output}`);
+          } else {
+            exec(`open ${output.replace("\\", "\\")}`);
+          }
+        }
+      } else {
+        conn.fail("Cannot found the database table").stop();
       }
     } else {
       conn.fail("Unable to connect to the database").stop();

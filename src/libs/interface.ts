@@ -9,6 +9,7 @@ export interface IAnswers {
   path: string;
   customize: boolean;
   style: string;
+  open: boolean;
 }
 
 export interface IConfig {
@@ -17,4 +18,13 @@ export interface IConfig {
   "user": string;
   "password": string;
   "database": string;
+}
+
+export interface IDescribe {
+  Field: string;
+  Type: string;
+  Null: string;
+  Key: string;
+  Default: string | null;
+  Extra: string;
 }

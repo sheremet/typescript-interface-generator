@@ -1,5 +1,5 @@
 # table-to-interface
-Generate the interface of the database table
+Generate the interface of the database tables for typescript projects.(Currently only mysql is supported)
 
 ## usage
 
@@ -18,7 +18,8 @@ Generate the interface of the database table
   -x, --pass [string]       Password for database server (default: "")
   -o, --output [string]     Where to place generated models (default: "/users/current_user/output")
   -c, --case-file [string]  Convert file names to specified case.
-                                           [choices: "ipascal", "pascal","param","camel","none"] (default: "none")
+                            [choices: "ipascal", "pascal","param","camel","none"] (default: "none")
+  -O, --open                 Whether to open the target path
 ```
 
 > ipascal like `IHelloWorld`
@@ -27,4 +28,4 @@ Generate the interface of the database table
 ig -h 127.0.0.1 -u root -x passw0rd -d database
 ```
 
-joy your time!
+Enjoy your time!!!
