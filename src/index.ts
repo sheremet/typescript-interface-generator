@@ -6,13 +6,13 @@ import * as fs from "fs";
 import * as inquirer from "inquirer";
 import * as symbols from "log-symbols";
 import * as ora from "ora";
+import { type } from "os";
 import * as path from "path";
 import { version } from "../package.json";
 import { IAnswers } from "./libs/interface";
 import MySql from "./libs/mysql";
 import { changeName, changeType } from "./libs/tools";
-
-let output = (process.env.HOME || process.env.USERPROFILE) + "/output";
+let output = (process.env.HOME || process.env.USERPROFILE) + type() === "Windows_NT" ? "\\" : "/" + "output";
 let style = "none";
 let mysqlConfig = {
   host: "127,0,0,1",
@@ -37,7 +37,7 @@ async function main() {
     .option("-d, --database <string>", "Database name")
     .option("-u, --user [string]", "Username for database server", "root")
     .option("-x, --pass [string]", "Password for database server", "")
-    .option("-o, --output [string]", "Where to place generated models", "/users/current_user/output")
+    .option("-o, --output [string]", "Where to place generated models", output)
     .option("-c, --case-file [string]", `Convert file names to specified case.
                                          [choices: "ipascal", "pascal","param","camel","none"]`, "none")
     .parse(process.argv);
