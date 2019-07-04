@@ -1,15 +1,18 @@
 # table-to-interface
+
 Generate the interface of the database tables for typescript projects.(Currently only mysql is supported)
 
 ## usage
 
 ### install
-``` bash
-(sudo) npm i datatable-to-interface -g
+
+```bash
+(sudo) npm i table-to-interface -g
 ```
+
 ### options
 
-``` bash
+```bash
   -v ,--version             output the version number
   -h, --host [string]       IP adress/Hostname for database server (default: "127.0.0.1")
   -p, --port [number]       Port number for database server (default: 3306)
@@ -19,12 +22,12 @@ Generate the interface of the database tables for typescript projects.(Currently
   -o, --output [string]     Where to place generated models (default: "/users/current_user/output")
   -c, --case-file [string]  Convert file names to specified case.
                             [choices: "ipascal", "pascal","param","camel","none"] (default: "none")
-  -O, --open                 Whether to open the target path
+  -O, --open                Whether to open the target path
 ```
 
 > ipascal like `IHelloWorld`
 
-``` bash
+```bash
 ig -h 127.0.0.1 -u root -x passw0rd -d database
 ```
 
