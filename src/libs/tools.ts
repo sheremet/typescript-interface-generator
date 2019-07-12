@@ -3,6 +3,13 @@ import * as changeCase from "change-case";
 export function changeType(dataType: string, columnType: string) {
   switch (dataType) {
     case "int":
+    case "smallint":
+    case "mediumint":
+    case "bigint":
+    case "float":
+    case "double":
+    case "decimal":
+    case "year":
       return "number";
     case "bit":
       if (columnType === "bit(1)") {
@@ -16,73 +23,41 @@ export function changeType(dataType: string, columnType: string) {
       } else {
         return "number";
       }
-    case "smallint":
-      return "number";
-    case "mediumint":
-      return "number";
-    case "bigint":
-      return "string";
-    case "float":
-      return "number";
-    case "double":
-      return "number";
-    case "decimal":
-      return "string";
     case "date":
+    case "time":
+    case "char":
+    case "varchar":
+    case "text":
+    case "tinytext":
+    case "mediumtext":
+    case "longtext":
+    case "enum":
+    case "geometry":
+    case "point":
+    case "linestring":
+    case "polygon":
+    case "multipoint":
+    case "multilinestring":
+    case "multipolygon":
+    case "geometrycollection":
+    case "geomcollection":
       return "string";
+
     case "datetime":
       return "Date";
     case "timestamp":
       return "Date";
-    case "time":
-      return "string";
-    case "year":
-      return "number";
-    case "char":
-      return "string";
-    case "varchar":
-      return "string";
+
     case "blob":
-      return "Buffer";
-    case "text":
-      return "string";
     case "tinyblob":
-      return "Buffer";
-    case "tinytext":
-      return "string";
     case "mediumblob":
-      return "Buffer";
-    case "mediumtext":
-      return "string";
     case "longblob":
-      return "Buffer";
-    case "longtext":
-      return "string";
-    case "enum":
-      return "string";
-    case "json":
-      return "object";
     case "binary":
-      return "Buffer";
     case "varbinary":
       return "Buffer";
-    case "geometry":
-      return "string";
-    case "point":
-      return "string";
-    case "linestring":
-      return "string";
-    case "polygon":
-      return "string";
-    case "multipoint":
-      return "string";
-    case "multilinestring":
-      return "string";
-    case "multipolygon":
-      return "string";
-    case "geometrycollection":
-    case "geomcollection":
-      return "string";
+
+    case "json":
+      return "object";
     default:
       return "unknown";
   }
