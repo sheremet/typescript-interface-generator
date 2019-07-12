@@ -24,11 +24,10 @@ class MySql {
     });
   }
   async exec<T>(sql: string, params?: object): Promise<T> {
-    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.pool.getConnection((err, conn) => {
-        if (err || !conn) {
-          return reject(err);
+        if (err) {
+          reject(err);
         }
         conn.query(sql, params, (error, results) => {
           if (error) {

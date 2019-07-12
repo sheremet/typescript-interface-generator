@@ -1,6 +1,6 @@
 {
   "name": "table-to-interface",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Generate the interface of the database tables for typescript projects.(Currently only mysql is supported)",
   "main": "index.js",
   "bin": {
@@ -8,8 +8,7 @@
   },
   "scripts": {
     "test": "jest --config jestconfig.json",
-    "build": "tsc",
-    "predeploy": "npm version patch"
+    "build": "tsc"
   },
   "private": false,
   "author": "abing",
@@ -30,6 +29,7 @@
     "chalk": "^2.4.2",
     "change-case": "^3.1.0",
     "commander": "^2.20.0",
+    "handlebars": "^4.1.2",
     "inquirer": "^6.4.1",
     "log-symbols": "^3.0.0",
     "mysql": "^2.17.1",
