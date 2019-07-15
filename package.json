@@ -1,6 +1,6 @@
 {
   "name": "table-to-interface",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Generate the interface of the database tables for typescript projects.(Currently only mysql is supported)",
   "main": "index.js",
   "bin": {
