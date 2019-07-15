@@ -2,15 +2,15 @@
 
 Generate the interface of the database tables for typescript projects.(Currently only mysql is supported)
 
-## usage
+## Usage
 
-### install
+### Install
 
 ```bash
 (sudo) npm i table-to-interface -g
 ```
 
-### options
+### Options
 
 ```bash
   -v ,--version             output the version number
@@ -29,6 +29,34 @@ Generate the interface of the database tables for typescript projects.(Currently
 
 ```bash
 ig -h 127.0.0.1 -u root -x passw0rd -d database
+```
+
+### Example
+``` typescript
+/**
+ * Generated from table comment
+ */
+export interface IAdminMenu {
+  /**
+   * Generated from the id comment
+   */
+  id?: number;
+  /**
+   * Generated from the title comment
+   */
+  title?: string;
+  /**
+   * Generated from the path comment
+   */
+  path: string;
+  /**
+   * Generated from the path comment
+   */
+  icon: string;
+  
+  ... and more
+}
+
 ```
 
 Enjoy your time!!!
