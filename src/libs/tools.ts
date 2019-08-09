@@ -74,5 +74,5 @@ export function changeName(name: string, style: string) {
 }
 
 export function optionalParam(isNullable: string) {
-  return isNullable === "NO" ? "?" : "";
+  return isNullable === "NO" ? "" : "?";
 }
